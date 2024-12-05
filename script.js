@@ -1,65 +1,50 @@
-const getUserChoice = userInput => {
-    userInput = userInput.toLowerCase();
-    if (userInput === 'rock' || userInput === 'paper' || userInput === 'scissors' || userInput === 'bomb') { 
-        return userInput;
-    } else {
-      console.log('Error!');
+const choices = ["rock", "paper", "scissors"];
+const playerDisplay = document.getElementById("playerDisplay");
+const computerDisplay = document.getElementById("computerDisplay");
+const resultDisplay = document.getElementById("resultDisplay");
+const playerScoreDisplay = document.getElementById("playerScoreDisplay");
+const computerScoreDisplay = document.getElementById("computerScoreDisplay");
+let playerScore = 0;
+let computerScore = 0;
+
+function playGame(playerChoice){
+
+    const computerChoice = choices[Math.floor(Math.random() * 3)];
+    let result = "";
+
+    if(playerChoice === computerChoice){
+        result = "IT'S A TIE!";
     }
-  }
-  
-  
-  const getComputerChoice = () => {
-    const randomNumber = Math.floor(Math.random() * 3);
-    switch (randomNumber) {
-      case 0:
-        return 'rock';
-      case 1:
-        return 'paper';
-      case 2:
-        return 'scissors';
-    }
-  };
-  
-  const determineWinner = (userChoice, computerChoice) => {
-    if (userChoice === computerChoice) {
-        return 'The game is a tie!';
-    }
-    if (userChoice === 'rock') {
-        if (computerChoice === 'paper') {
-          return 'Computer won.';
-          } else {
-            return 'You won!';
-          }
-    }
-  
-    if (userChoice === 'paper') {
-        if (computerChoice === 'scissors') {
-            return 'Computer won.';
-        } else {
-            return 'You won!';
-        }
-    } 
-  
-    if (userChoice === 'scissors') {
-        if (computerChoice === 'rock') {
-            return 'Computer won.';
-        } else {
-            return 'You won!';
+    else{
+        switch(playerChoice){
+            case "rock":
+                result = (computerChoice === "scissors") ? "YOU WIN!" : "YOU LOSE!";
+                break;
+            case "paper":
+                result = (computerChoice === "rock") ? "YOU WIN!" : "YOU LOSE!";
+                break;
+            case "scissors":
+                result = (computerChoice === "paper") ? "YOU WIN!" : "YOU LOSE!";
+                break;
         }
     }
-  
-    if (userChoice === 'bomb') {
-        return 'You won!';
+
+    playerDisplay.textContent = `PLAYER: ${playerChoice}`;
+    computerDisplay.textContent = `Computer: ${computerChoice}`;
+    resultDisplay.textContent = result;
+
+    resultDisplay.classList.remove("greenText", "redText");
+
+    switch(result){
+        case "YOU WIN!":
+            resultDisplay.classList.add("greenText");
+            playerScore++;
+            playerScoreDisplay.textContent = playerScore;
+            break;
+        case "YOU LOSE!":
+            resultDisplay.classList.add("redText");
+            computerScore++;
+            computerScoreDisplay.textContent = computerScore;
+            break;
     }
-  };
-  
-  const playGame = () => {
-      const userChoice = getUserChoice('rock');
-      const computerChoice = getComputerChoice(); 
-      console.log(`You chose: ${userChoice}.`);
-      console.log(`Computer chose: ${computerChoice}.`);
-      
-      console.log(determineWinner(userChoice, computerChoice));
-  };
-  
-  playGame();
+}
